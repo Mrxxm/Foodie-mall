@@ -19,20 +19,23 @@ public class UserController {
     }
 
     @PostMapping("/api/saveUser")
-    public void saveUser() {
-
+    public Object saveUser() {
         userService.saveUser();
+
+        return "OK";
     }
 
     @PostMapping("/api/modifyUser")
-    public void modifyUser(String id) {
-
+    public Object modifyUser(String id) {
         userService.updateUser(id);
+
+        return "OK";
     }
 
     @PostMapping("/api/deleteUser")
-    public void deleteUser(String id) {
-
+    public Object deleteUser(String id) {
         userService.deleteUser(id);
+
+        return "OK";
     }
 }
