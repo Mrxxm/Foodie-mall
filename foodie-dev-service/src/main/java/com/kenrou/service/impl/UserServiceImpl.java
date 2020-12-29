@@ -32,6 +32,12 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean queryUsernameIsExist(String username) {
 
+        // 切面日志测试
+//        try {
+//            Thread.sleep(3500);
+//        } catch (Exception e) {
+//        }
+
         Example userExample = new Example(Users.class);
         Example.Criteria userCriteria = userExample.createCriteria();
         userCriteria.andEqualTo("username", username);
