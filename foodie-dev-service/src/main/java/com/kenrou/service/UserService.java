@@ -24,11 +24,4 @@ public interface UserService {
      */
     public Users queryUserForLogin(String username, String password);
 
-    public Users getUser(String id);
-
-    public void saveUser();
-
-    public void updateUser(String id);
-
-    public void deleteUser(String id);
 }

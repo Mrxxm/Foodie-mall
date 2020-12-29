@@ -91,45 +91,4 @@ public class UserServiceImpl implements UserService {
         return result;
     }
 
-    @Transactional(propagation = Propagation.SUPPORTS) // 事务支持
-    @Override
-    public Users getUser(String id) {
-
-        return usersMapper.selectByPrimaryKey(id);
-    }
-
-    @Transactional(propagation = Propagation.REQUIRED)
-    @Override
-    public void saveUser() {
-        Users users = new Users();
-        users.setId("xxx12345");
-        users.setUsername("xxm");
-        users.setNickname("啃肉");
-        users.setPassword("34343434");
-        users.setFace("face");
-        Date date = new Date();
-        users.setCreatedTime(date);
-        users.setUpdatedTime(date);
-
-        usersMapper.insert(users);
-    }
-
-    @Transactional(propagation = Propagation.REQUIRED)
-    @Override
-    public void updateUser(String id) {
-        Users users = new Users();
-
-        users.setUsername("xxm_update");
-
-        usersMapper.updateByPrimaryKey(users);
-    }
-
-    @Transactional(propagation = Propagation.REQUIRED)
-    @Override
-    public void deleteUser(String id) {
-        Users users = new Users();
-        users.setId(id);
-
-        usersMapper.delete(users);
-    }
 }
