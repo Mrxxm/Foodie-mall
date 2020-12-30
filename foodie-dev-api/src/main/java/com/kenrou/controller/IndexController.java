@@ -4,6 +4,7 @@ import com.kenrou.enums.YesOrNo;
 import com.kenrou.pojo.Carousel;
 import com.kenrou.pojo.Category;
 import com.kenrou.pojo.vo.CategoryVO;
+import com.kenrou.pojo.vo.NewItemsVO;
 import com.kenrou.service.CarouselService;
 import com.kenrou.service.CategoryService;
 import com.kenrou.utils.IMOOCJSONResult;
@@ -54,6 +55,22 @@ public class IndexController {
         }
 
         List<CategoryVO> result = categoryService.getSubCatList(rootCatId);
+        return IMOOCJSONResult.ok(result);
+    }
+
+    /**
+     * 最新商品
+     */
+    @ApiOperation(value = "获取最新商品", notes = "获取最新商品", httpMethod = "GET")
+    @GetMapping("/sixNewItems/{rootCatId}")
+    public IMOOCJSONResult sixNewItems(
+            @ApiParam(name = "rootCatId", value = "一级分类id", required = true)
+            @PathVariable Integer rootCatId) {
+        if (rootCatId == null) {
+            return IMOOCJSONResult.errorMsg("分类不存在");
+        }
+
+        List<NewItemsVO> result = categoryService.getSixNewItemsLazy(rootCatId);
         return IMOOCJSONResult.ok(result);
     }
 }
