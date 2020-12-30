@@ -4,9 +4,9 @@ package com.kenrou.enums;
  * @Desc: 性别 枚举
  */
 public enum CategoryLevel {
-    woman(0, "女"),
-    man(1, "男"),
-    secret(2, "保密");
+    levelOne(1, "一级"),
+    levelTwo(2, "二级"),
+    levelThree(3, "三级");
 
     public final Integer type;
     public final String value;

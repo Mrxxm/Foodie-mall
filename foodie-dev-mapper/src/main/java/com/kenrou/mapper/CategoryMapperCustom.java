@@ -1,7 +1,10 @@
 package com.kenrou.mapper;
 
-import com.kenrou.my.mapper.MyMapper;
-import com.kenrou.pojo.Category;
+import com.kenrou.pojo.vo.CategoryVO;
 
-public interface CategoryMapperCustom extends MyMapper<Category> {
+import java.util.List;
+
+public interface CategoryMapperCustom {
+
+    public List<CategoryVO> getSubCatList(Integer rootCatId);
 }
