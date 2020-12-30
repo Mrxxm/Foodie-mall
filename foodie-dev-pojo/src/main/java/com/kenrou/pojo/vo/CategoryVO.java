@@ -46,4 +46,12 @@ public class CategoryVO {
     public void setFatherId(Integer fatherId) {
         this.fatherId = fatherId;
     }
+
+    public List<SubCategoryVO> getSubCatList() {
+        return subCatList;
+    }
+
+    public void setSubCatList(List<SubCategoryVO> subCatList) {
+        this.subCatList = subCatList;
+    }
 }
