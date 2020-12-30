@@ -42,7 +42,7 @@ public class ItemServiceImpl implements ItemService {
     public List<ItemsImg> queryItemImgList(String itemId) {
         Example example = new Example(ItemsImg.class);
         Example.Criteria criteria = example.createCriteria();
-        criteria.andEqualTo("item_id", itemId);
+        criteria.andEqualTo("itemId", itemId);
 
         List<ItemsImg> result = itemsImgMapper.selectByExample(example);
 
@@ -54,7 +54,7 @@ public class ItemServiceImpl implements ItemService {
     public List<ItemsSpec> queryItemSpecList(String itemId) {
         Example example = new Example(ItemsSpec.class);
         Example.Criteria criteria = example.createCriteria();
-        criteria.andEqualTo("item_id", itemId);
+        criteria.andEqualTo("itemId", itemId);
 
         List<ItemsSpec> result = itemsSpecMapper.selectByExample(example);
 
@@ -66,7 +66,7 @@ public class ItemServiceImpl implements ItemService {
     public ItemsParam queryItemParam(String itemId) {
         Example example = new Example(ItemsParam.class);
         Example.Criteria criteria = example.createCriteria();
-        criteria.andEqualTo("item_id", itemId);
+        criteria.andEqualTo("itemId", itemId);
 
         ItemsParam result = itemsParamMapper.selectOneByExample(example);
 
