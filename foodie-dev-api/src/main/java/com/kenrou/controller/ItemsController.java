@@ -113,4 +113,31 @@ public class ItemsController extends BaseController {
 
         return IMOOCJSONResult.ok(result);
     }
+
+    @ApiOperation(value = "搜索商品列表根据分类", notes = "搜索商品列表根据分类", httpMethod = "GET")
+    @GetMapping("/catItems")
+    public IMOOCJSONResult catItems(
+            @ApiParam(name = "catId", value = "三级分类id", required = true)
+            @RequestParam Integer catId,
+            @ApiParam(name = "sort",  value = "排序规则", required = false)
+            @RequestParam String sort,
+            @ApiParam(name = "page", value = "页码", required = false)
+            @RequestParam Integer page,
+            @ApiParam(name = "pageSize", value = "分页大小", required = false)
+            @RequestParam Integer pageSize) {
+
+        if (catId == null) {
+            return IMOOCJSONResult.errorMsg("null");
+        }
+        if (page == null) {
+            page = 1;
+        }
+        if (pageSize == null) {
+            pageSize = SEARCH_PAGE_SIZE;
+        }
+
+        PagedGridResult result = itemService.searchItems(catId, sort, page, pageSize);
+
+        return IMOOCJSONResult.ok(result);
+    }
 }
