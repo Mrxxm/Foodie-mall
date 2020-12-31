@@ -8,6 +8,7 @@ import com.kenrou.pojo.*;
 import com.kenrou.pojo.vo.CommentLevelCountsVO;
 import com.kenrou.pojo.vo.ItemCommentVO;
 import com.kenrou.service.ItemService;
+import com.kenrou.utils.DesensitizationUtil;
 import com.kenrou.utils.PagedGridResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -122,6 +123,11 @@ public class ItemServiceImpl implements ItemService {
         PageHelper.startPage(page, pageSize);
 
         List<ItemCommentVO> list = itemsMapperCustom.queryItemComments(map);
+
+        // 脱敏
+        for (ItemCommentVO vo : list) {
+            vo.setNickname(DesensitizationUtil.commonDisplay(vo.getNickname()));
+        }
 
         return setterPagedGrid(list, page);
     }
