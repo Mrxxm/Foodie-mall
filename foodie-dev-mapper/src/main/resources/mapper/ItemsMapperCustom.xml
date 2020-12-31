@@ -73,7 +73,7 @@
                 i.sell_counts DESC
               </when>
               <when test="paramsMap.sort == &quot;p&quot;">
-                tempSpec.price ASC
+                tempSpec.price_discount ASC
               </when>
               <otherwise>
                 i.item_name ASC
