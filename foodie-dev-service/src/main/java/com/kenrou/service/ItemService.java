@@ -42,4 +42,9 @@ public interface ItemService {
      * 根据商品id查询评价(分页)
      */
     public PagedGridResult queryPageComments(String itemId, Integer level, Integer page, Integer pageSize);
+
+    /**
+     * 搜索商品列表(分页)
+     */
+    public PagedGridResult searchItems(String keywords, String sort, Integer page, Integer pageSize);
 }

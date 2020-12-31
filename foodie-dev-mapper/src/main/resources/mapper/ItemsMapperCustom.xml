@@ -32,4 +32,55 @@
                 ic.comment_level = #{paramsMap.level}
         </if>
   </select>
+
+    <resultMap id="searchItemsVO" type="com.kenrou.pojo.vo.SearchItemsVO">
+        <id column="itemId" property="itemId" />
+        <result column="itemName" property="itemName" />
+        <result column="sellCounts" property="sellCounts" />
+        <result column="imgUrl" property="imgUrl" />
+        <result column="price" property="price" />
+    </resultMap>
+
+    <select id="searchItems" resultMap="searchItemsVO" parameterType="Map">
+        SELECT
+            i.id as itemId,
+            i.item_name as itemName,
+            i.sell_counts as sellCounts,
+            ii.url as imgUrl,
+            tempSpec.price_discount as price
+        FROM
+            items i
+        LEFT JOIN
+            items_img ii
+        ON
+          i.id = ii.item_id
+        LEFT JOIN
+          (
+            SELECT item_id, MIN(`price_discount`) as price_discount
+            FROM items_spec
+            GROUP BY item_id
+            ) tempSpec
+        ON i.id = tempSpec.item_id
+        WHERE
+          ii.is_main = 1
+            <if test="paramsMap.keywords != null and paramsMap.keywords != ''">
+              AND
+                i.item_name like '%${paramsMap.keywords}%'
+            </if>
+          ORDER BY
+            <choose>
+              <when test="paramsMap.sort == &quot;c&quot;">
+                i.sell_counts DESC
+              </when>
+              <when test="paramsMap.sort == &quot;p&quot;">
+                tempSpec.price ASC
+              </when>
+              <otherwise>
+                i.item_name ASC
+              </otherwise>
+            </choose>
+    </select>
+    <!-- k: 默认排序，根据name-->
+    <!-- c: 销量排序-->
+    <!-- p: 价格排序-->
 </mapper>

@@ -7,6 +7,7 @@ import com.kenrou.mapper.*;
 import com.kenrou.pojo.*;
 import com.kenrou.pojo.vo.CommentLevelCountsVO;
 import com.kenrou.pojo.vo.ItemCommentVO;
+import com.kenrou.pojo.vo.SearchItemsVO;
 import com.kenrou.service.ItemService;
 import com.kenrou.utils.DesensitizationUtil;
 import com.kenrou.utils.PagedGridResult;
@@ -128,6 +129,19 @@ public class ItemServiceImpl implements ItemService {
         for (ItemCommentVO vo : list) {
             vo.setNickname(DesensitizationUtil.commonDisplay(vo.getNickname()));
         }
+
+        return setterPagedGrid(list, page);
+    }
+
+    @Transactional(propagation = Propagation.SUPPORTS)
+    @Override
+    public PagedGridResult searchItems(String keywords, String sort, Integer page, Integer pageSize) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("keywords", keywords);
+        map.put("sort", sort);
+
+        PageHelper.startPage(page, pageSize);
+        List<SearchItemsVO> list = itemsMapperCustom.searchItems(map);
 
         return setterPagedGrid(list, page);
     }
