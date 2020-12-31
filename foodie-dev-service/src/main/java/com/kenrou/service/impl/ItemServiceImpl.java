@@ -1,17 +1,23 @@
 package com.kenrou.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.kenrou.enums.CommentLevel;
 import com.kenrou.mapper.*;
 import com.kenrou.pojo.*;
 import com.kenrou.pojo.vo.CommentLevelCountsVO;
+import com.kenrou.pojo.vo.ItemCommentVO;
 import com.kenrou.service.ItemService;
+import com.kenrou.utils.PagedGridResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class ItemServiceImpl implements ItemService {
@@ -26,6 +32,8 @@ public class ItemServiceImpl implements ItemService {
     private ItemsParamMapper itemsParamMapper;
     @Autowired
     private ItemsCommentsMapper itemsCommentsMapper;
+    @Autowired
+    private ItemsMapperCustom itemsMapperCustom;
 
     @Transactional(propagation = Propagation.SUPPORTS)
     @Override
@@ -95,5 +103,37 @@ public class ItemServiceImpl implements ItemService {
         }
 
         return itemsCommentsMapper.selectCount(condition);
+    }
+
+    @Transactional(propagation = Propagation.SUPPORTS)
+    @Override
+    public PagedGridResult queryPageComments(String itemId, Integer level, Integer page, Integer pageSize) {
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("itemId", itemId);
+        map.put("level", level);
+
+        // mybatis-pageHelper
+
+        /**
+         * page: 第几页
+         * pageSize: 每页显示条数
+         */
+        PageHelper.startPage(page, pageSize);
+
+        List<ItemCommentVO> list = itemsMapperCustom.queryItemComments(map);
+
+        return setterPagedGrid(list, page);
+    }
+
+    private PagedGridResult setterPagedGrid(List<?> list, Integer page) {
+        PageInfo pageList = new PageInfo<>(list);
+        PagedGridResult grid = new PagedGridResult();
+        grid.setPage(page);
+        grid.setRows(list);
+        grid.setTotal(pageList.getPages());
+        grid.setRecords(pageList.getTotal());
+
+        return grid;
     }
 }
