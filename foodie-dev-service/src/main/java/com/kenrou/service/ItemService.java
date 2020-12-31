@@ -4,6 +4,7 @@ import com.kenrou.pojo.Items;
 import com.kenrou.pojo.ItemsImg;
 import com.kenrou.pojo.ItemsParam;
 import com.kenrou.pojo.ItemsSpec;
+import com.kenrou.pojo.vo.CommentLevelCountsVO;
 
 import java.util.List;
 
@@ -28,4 +29,9 @@ public interface ItemService {
      * 根据商品id查询商品参数
      */
     public ItemsParam queryItemParam(String itemId);
+
+    /**
+     * 根据商品id查询评价数
+     */
+    public CommentLevelCountsVO queryCommentCounts(String itemId);
 }

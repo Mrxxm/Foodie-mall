@@ -1,13 +1,9 @@
 package com.kenrou.service.impl;
 
-import com.kenrou.mapper.ItemsImgMapper;
-import com.kenrou.mapper.ItemsMapper;
-import com.kenrou.mapper.ItemsParamMapper;
-import com.kenrou.mapper.ItemsSpecMapper;
-import com.kenrou.pojo.Items;
-import com.kenrou.pojo.ItemsImg;
-import com.kenrou.pojo.ItemsParam;
-import com.kenrou.pojo.ItemsSpec;
+import com.kenrou.enums.CommentLevel;
+import com.kenrou.mapper.*;
+import com.kenrou.pojo.*;
+import com.kenrou.pojo.vo.CommentLevelCountsVO;
 import com.kenrou.service.ItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,8 +24,8 @@ public class ItemServiceImpl implements ItemService {
     private ItemsSpecMapper itemsSpecMapper;
     @Autowired
     private ItemsParamMapper itemsParamMapper;
-
-
+    @Autowired
+    private ItemsCommentsMapper itemsCommentsMapper;
 
     @Transactional(propagation = Propagation.SUPPORTS)
     @Override
@@ -71,5 +67,33 @@ public class ItemServiceImpl implements ItemService {
         ItemsParam result = itemsParamMapper.selectOneByExample(example);
 
         return result;
+    }
+
+    @Transactional(propagation = Propagation.SUPPORTS)
+    @Override
+    public CommentLevelCountsVO queryCommentCounts(String itemId) {
+        Integer goodCounts = getCommentCounts(itemId, CommentLevel.good.type);
+        Integer normalCounts = getCommentCounts(itemId, CommentLevel.normal.type);
+        Integer badCounts = getCommentCounts(itemId, CommentLevel.bad.type);
+        Integer totalCounts = goodCounts + normalCounts + badCounts;
+
+        CommentLevelCountsVO commentLevelCountsVO = new CommentLevelCountsVO();
+        commentLevelCountsVO.setGoodCounts(goodCounts);
+        commentLevelCountsVO.setNormalCounts(normalCounts);
+        commentLevelCountsVO.setBadCounts(badCounts);
+        commentLevelCountsVO.setTotalCounts(totalCounts);
+
+        return commentLevelCountsVO;
+    }
+
+    @Transactional(propagation = Propagation.SUPPORTS)
+    public Integer getCommentCounts(String itemId, Integer level) {
+        ItemsComments condition = new ItemsComments();
+        condition.setItemId(itemId);
+        if (level != null) {
+            condition.setCommentLevel(level);
+        }
+
+        return itemsCommentsMapper.selectCount(condition);
     }
 }
