@@ -11,6 +11,7 @@
     <result column="nickname" property="nickname" />
   </resultMap>
 
+    <!--查询评论-->
   <select id="queryItemComments" resultMap="itemCommentVO" parameterType="Map">
     SELECT
         ic.comment_level as commentLevel,
@@ -41,6 +42,7 @@
         <result column="price" property="price" />
     </resultMap>
 
+    <!--根据关键词搜索商品-->
     <select id="searchItems" resultMap="searchItemsVO" parameterType="Map">
         SELECT
             i.id as itemId,
@@ -84,6 +86,7 @@
     <!-- c: 销量排序-->
     <!-- p: 价格排序-->
 
+    <!--根据分类搜索商品-->
     <select id="searchItemsByThirdCat" resultMap="searchItemsVO" parameterType="Map">
         SELECT
             i.id as itemId,
@@ -120,5 +123,34 @@
                     i.item_name ASC
                 </otherwise>
             </choose>
+    </select>
+
+    <!--购物车渲染-->
+    <select id="queryItemsBySpecIds" parameterMap="paramsList" resultType="com.kenrou.pojo.vo.ShopcartVO">
+      SELECT
+            t_items.id as itemId,
+            t_items.item_name as itemName,
+            t_items_img.url as itemImgUrl,
+            t_items_spec.id as specId,
+            t_items_spec.name as specName,
+            t_items_spec.price_discount as priceDiscount,
+            t_items_spec.price_normal as priceNormal
+        FROM
+          items_spec t_items_spec
+        LEFT JOIN
+          items t_items
+        ON
+          t_items_spec.item_id = t_items.id
+        LEFT JOIN
+          items_img t_items_img
+        ON
+          t_items_spec.item_id = t_items_img.item_id
+        WHERE
+          t_items_img.is_main = 1
+        AND
+          t_items_spec.id IN
+          <foreach collection="paramsList" index="index" item="specId" open="(" separator="," close=")">
+            #{specId}
+          </foreach>
     </select>
 </mapper>

@@ -8,6 +8,7 @@ import com.kenrou.pojo.*;
 import com.kenrou.pojo.vo.CommentLevelCountsVO;
 import com.kenrou.pojo.vo.ItemCommentVO;
 import com.kenrou.pojo.vo.SearchItemsVO;
+import com.kenrou.pojo.vo.ShopcartVO;
 import com.kenrou.service.ItemService;
 import com.kenrou.utils.DesensitizationUtil;
 import com.kenrou.utils.PagedGridResult;
@@ -157,6 +158,11 @@ public class ItemServiceImpl implements ItemService {
         List<SearchItemsVO> list = itemsMapperCustom.searchItemsByThirdCat(map);
 
         return setterPagedGrid(list, page);
+    }
+
+    @Override
+    public List<ShopcartVO> queryItemsBySpecIds(String specIds) {
+        return null;
     }
 
     private PagedGridResult setterPagedGrid(List<?> list, Integer page) {

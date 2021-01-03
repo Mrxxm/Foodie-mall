@@ -7,6 +7,7 @@ import com.kenrou.pojo.ItemsParam;
 import com.kenrou.pojo.ItemsSpec;
 import com.kenrou.pojo.vo.CommentLevelCountsVO;
 import com.kenrou.pojo.vo.ItemCommentVO;
+import com.kenrou.pojo.vo.ShopcartVO;
 import com.kenrou.utils.PagedGridResult;
 
 import java.util.List;
@@ -52,4 +53,9 @@ public interface ItemService {
      * 搜索商品列表by分类(分页)
      */
     public PagedGridResult searchItems(Integer catId, String sort, Integer page, Integer pageSize);
+
+    /**
+     * 购物车渲染 根据规格ids查询最新购物车商品数据
+     */
+    public List<ShopcartVO> queryItemsBySpecIds(String specIds);
 }
