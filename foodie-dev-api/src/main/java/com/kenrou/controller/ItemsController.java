@@ -3,6 +3,7 @@ package com.kenrou.controller;
 import com.kenrou.pojo.*;
 import com.kenrou.pojo.vo.CommentLevelCountsVO;
 import com.kenrou.pojo.vo.ItemInfoVo;
+import com.kenrou.pojo.vo.ShopcartVO;
 import com.kenrou.service.ItemService;
 import com.kenrou.utils.IMOOCJSONResult;
 import com.kenrou.utils.PagedGridResult;
@@ -137,6 +138,23 @@ public class ItemsController extends BaseController {
         }
 
         PagedGridResult result = itemService.searchItems(catId, sort, page, pageSize);
+
+        return IMOOCJSONResult.ok(result);
+    }
+
+    // 用户刷新购物车中数据
+    @ApiOperation(value = "根据商品规格ids查找最新商品数据", notes = "根据商品规格ids查找最新商品数据", httpMethod = "GET")
+    @GetMapping("/refresh")
+    public IMOOCJSONResult refresh(
+            @ApiParam(name = "itemSpecIds",  value = "规格ids", required = true, example = "1,2,3")
+            @RequestParam String itemSpecIds
+            ) {
+
+        if (StringUtils.isBlank(itemSpecIds)) {
+            return IMOOCJSONResult.errorMsg("ok");
+        }
+
+        List<ShopcartVO> result = itemService.queryItemsBySpecIds(itemSpecIds);
 
         return IMOOCJSONResult.ok(result);
     }

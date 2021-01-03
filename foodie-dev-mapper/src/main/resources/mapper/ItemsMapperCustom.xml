@@ -126,7 +126,7 @@
     </select>
 
     <!--购物车渲染-->
-    <select id="queryItemsBySpecIds" parameterMap="paramsList" resultType="com.kenrou.pojo.vo.ShopcartVO">
+    <select id="queryItemsBySpecIds" parameterType="List" resultType="com.kenrou.pojo.vo.ShopcartVO">
       SELECT
             t_items.id as itemId,
             t_items.item_name as itemName,
