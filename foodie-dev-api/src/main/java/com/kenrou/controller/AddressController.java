@@ -60,6 +60,11 @@ public class AddressController {
     @PostMapping("/update")
     public IMOOCJSONResult update(@RequestBody AddressBO addressBO) {
 
+        if (StringUtils.isBlank(addressBO.getAddressId())) {
+            return IMOOCJSONResult.errorMsg("修改地址失败：addressId不能为空")tus
+            ;
+        }
+
         IMOOCJSONResult checkResult = checkAddress(addressBO);
         if (checkResult.getStatus() != 200) {
             return checkResult;
