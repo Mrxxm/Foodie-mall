@@ -21,4 +21,14 @@ public interface AddressService {
      * 更新地址
      */
     public void updateUserAddress(AddressBO addressBO);
+
+    /**
+     * 删除地址
+     */
+    public void deleteUserAddress(String userId, String addressId);
+
+    /**
+     * 设为默认地址
+     */
+    public void setDefaultAddress(String userId, String addressId);
 }

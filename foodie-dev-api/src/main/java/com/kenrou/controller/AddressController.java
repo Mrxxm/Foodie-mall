@@ -61,8 +61,7 @@ public class AddressController {
     public IMOOCJSONResult update(@RequestBody AddressBO addressBO) {
 
         if (StringUtils.isBlank(addressBO.getAddressId())) {
-            return IMOOCJSONResult.errorMsg("修改地址失败：addressId不能为空")tus
-            ;
+            return IMOOCJSONResult.errorMsg("修改地址失败：addressId不能为空");
         }
 
         IMOOCJSONResult checkResult = checkAddress(addressBO);
@@ -71,6 +70,38 @@ public class AddressController {
         }
 
         addressService.updateUserAddress(addressBO);
+
+        return IMOOCJSONResult.ok();
+    }
+
+    @ApiOperation(value = "删除地址", notes = "删除地址", httpMethod = "POST")
+    @PostMapping("/delete")
+    public IMOOCJSONResult delete(@RequestParam String userId, @RequestParam String addressId) {
+
+        if (StringUtils.isBlank(userId)) {
+            return IMOOCJSONResult.errorMsg("userId不能为空");
+        }
+        if (StringUtils.isBlank(addressId)) {
+            return IMOOCJSONResult.errorMsg("addressId不能为空");
+        }
+
+        addressService.deleteUserAddress(userId, addressId);
+
+        return IMOOCJSONResult.ok();
+    }
+
+    @ApiOperation(value = "设为默认地址", notes = "设为默认地址", httpMethod = "POST")
+    @PostMapping("/setDefalut")
+    public IMOOCJSONResult setDefalut(@RequestParam String userId, @RequestParam String addressId) {
+
+        if (StringUtils.isBlank(userId)) {
+            return IMOOCJSONResult.errorMsg("userId不能为空");
+        }
+        if (StringUtils.isBlank(addressId)) {
+            return IMOOCJSONResult.errorMsg("addressId不能为空");
+        }
+
+        addressService.setDefaultAddress(userId, addressId);
 
         return IMOOCJSONResult.ok();
     }

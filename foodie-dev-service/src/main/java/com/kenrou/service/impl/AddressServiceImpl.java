@@ -1,5 +1,6 @@
 package com.kenrou.service.impl;
 
+import com.kenrou.enums.YesOrNo;
 import com.kenrou.mapper.UserAddressMapper;
 import com.kenrou.pojo.UserAddress;
 import com.kenrou.pojo.bo.AddressBO;
@@ -70,5 +71,42 @@ public class AddressServiceImpl implements AddressService {
         updateAddress.setUpdatedTime(new Date());
 
         userAddressMapper.updateByPrimaryKeySelective(updateAddress);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRED)
+    @Override
+    public void deleteUserAddress(String userId, String addressId) {
+        UserAddress userAddress = new UserAddress();
+        userAddress.setId(addressId);
+        userAddress.setUserId(userId);
+
+        userAddressMapper.delete(userAddress);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRED)
+    @Override
+    public void setDefaultAddress(String userId, String addressId) {
+
+        // 1.查找默认地址，设置为不默认
+        UserAddress queryAddress = new UserAddress();
+        queryAddress.setUserId(userId);
+        queryAddress.setIsDefault(YesOrNo.YES.type);
+
+        // 查询
+        UserAddress queryResAddress = userAddressMapper.selectOne(queryAddress);
+        if (queryResAddress != null) {
+            queryResAddress.setIsDefault(YesOrNo.NO.type);
+            // 更新
+            userAddressMapper.updateByPrimaryKeySelective(queryResAddress);
+        }
+
+        // 2.根据地址id修改为默认的地址
+        UserAddress userAddress = new UserAddress();
+
+        userAddress.setId(addressId);
+        userAddress.setUserId(userId);
+        userAddress.setIsDefault(YesOrNo.YES.type);
+
+        userAddressMapper.updateByPrimaryKeySelective(userAddress);
     }
 }
