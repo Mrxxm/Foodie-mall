@@ -3,6 +3,7 @@ package com.kenrou.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.kenrou.enums.CommentLevel;
+import com.kenrou.enums.YesOrNo;
 import com.kenrou.mapper.*;
 import com.kenrou.pojo.*;
 import com.kenrou.pojo.vo.CommentLevelCountsVO;
@@ -174,6 +175,20 @@ public class ItemServiceImpl implements ItemService {
 
         return itemsSpecMapper.selectByPrimaryKey(specId);
     }
+
+    @Override
+    public String queryItemMainImgByItemId(String itemId) {
+        ItemsImg itemsImg = new ItemsImg();
+        itemsImg.setItemId(itemId);
+        itemsImg.setIsMain(YesOrNo.YES.type);
+
+        ItemsImg itemImg = itemsImgMapper.selectOne(itemsImg);
+
+        return itemImg.getUrl();
+    }
+
+    @Transactional(propagation = Propagation.SUPPORTS)
+
 
     private PagedGridResult setterPagedGrid(List<?> list, Integer page) {
         PageInfo pageList = new PageInfo<>(list);

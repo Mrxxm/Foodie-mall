@@ -63,4 +63,9 @@ public interface ItemService {
      * 查询商品规格
      */
     public ItemsSpec queryItemsSpecById(String specId);
+
+    /**
+     * 查询商品主图
+     */
+    public String queryItemMainImgByItemId(String itemId);
 }
