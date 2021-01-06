@@ -168,6 +168,15 @@ public class ItemServiceImpl implements ItemService {
         return itemsMapperCustom.queryItemsBySpecIds(specIdsList);
     }
 
+    @Transactional(propagation = Propagation.SUPPORTS)
+    @Override
+    public ItemsSpec queryItemsSpecById(String specId) {
+        ItemsSpec itemsSpec = new ItemsSpec();
+        itemsSpec.setId(specId);
+
+        return itemsSpecMapper.selectOne(itemsSpec);
+    }
+
     private PagedGridResult setterPagedGrid(List<?> list, Integer page) {
         PageInfo pageList = new PageInfo<>(list);
         PagedGridResult grid = new PagedGridResult();

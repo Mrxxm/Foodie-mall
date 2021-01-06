@@ -58,4 +58,9 @@ public interface ItemService {
      * 购物车渲染 根据规格ids查询最新购物车商品数据
      */
     public List<ShopcartVO> queryItemsBySpecIds(String specIds);
+
+    /**
+     * 查询商品规格
+     */
+    public ItemsSpec queryItemsSpecById(String specId);
 }
