@@ -171,10 +171,8 @@ public class ItemServiceImpl implements ItemService {
     @Transactional(propagation = Propagation.SUPPORTS)
     @Override
     public ItemsSpec queryItemsSpecById(String specId) {
-        ItemsSpec itemsSpec = new ItemsSpec();
-        itemsSpec.setId(specId);
 
-        return itemsSpecMapper.selectOne(itemsSpec);
+        return itemsSpecMapper.selectByPrimaryKey(specId);
     }
 
     private PagedGridResult setterPagedGrid(List<?> list, Integer page) {
