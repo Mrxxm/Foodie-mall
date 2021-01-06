@@ -176,6 +176,7 @@ public class ItemServiceImpl implements ItemService {
         return itemsSpecMapper.selectByPrimaryKey(specId);
     }
 
+    @Transactional(propagation = Propagation.SUPPORTS)
     @Override
     public String queryItemMainImgByItemId(String itemId) {
         ItemsImg itemsImg = new ItemsImg();
@@ -186,9 +187,6 @@ public class ItemServiceImpl implements ItemService {
 
         return itemImg.getUrl();
     }
-
-    @Transactional(propagation = Propagation.SUPPORTS)
-
 
     private PagedGridResult setterPagedGrid(List<?> list, Integer page) {
         PageInfo pageList = new PageInfo<>(list);
