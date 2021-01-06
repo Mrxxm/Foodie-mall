@@ -31,4 +31,9 @@ public interface AddressService {
      * 设为默认地址
      */
     public void setDefaultAddress(String userId, String addressId);
+
+    /**
+     * 根据用户id和地址id查询具体用户地址对象信息
+     */
+    public UserAddress queryUserAddress(String userId, String addressId);
 }
