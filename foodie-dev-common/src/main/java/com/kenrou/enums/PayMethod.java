@@ -1,12 +1,11 @@
 package com.kenrou.enums;
 
 /**
- * @Desc: 性别 枚举
+ * @Desc: 支付方式 枚举
  */
 public enum PayMethod {
-    woman(0, "女"),
-    man(1, "男"),
-    secret(2, "保密");
+    WEIXIN(1, "微信"),
+    ALIPAY(2, "支付宝");
 
     public final Integer type;
     public final String value;

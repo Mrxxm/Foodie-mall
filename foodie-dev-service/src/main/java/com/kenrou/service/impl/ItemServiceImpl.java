@@ -188,6 +188,23 @@ public class ItemServiceImpl implements ItemService {
         return itemImg.getUrl();
     }
 
+    @Transactional(propagation = Propagation.REQUIRED)
+    @Override
+    public void decreaseItemSpecStock(String specId, int buyCounts) {
+        // 1.synchronized 不推荐，集群无用，性能低下
+        // 2.锁数据库：不推荐 性能低下
+        // 分布式锁(zookeeper redis)
+        // lockUtil.getLock(); -- 加锁
+        // 减库存
+        // lockUtil.unLock(); -- 解锁
+
+        // 这里使用乐观锁
+        Integer result = itemsMapperCustom.decreaseItemSpecStock(specId, buyCounts);
+        if (result != 1) {
+            throw new RuntimeException("订单创建失败，原因：库存不足！");
+        }
+    }
+
     private PagedGridResult setterPagedGrid(List<?> list, Integer page) {
         PageInfo pageList = new PageInfo<>(list);
         PagedGridResult grid = new PagedGridResult();

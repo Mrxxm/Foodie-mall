@@ -68,4 +68,9 @@ public interface ItemService {
      * 查询商品主图
      */
     public String queryItemMainImgByItemId(String itemId);
+
+    /**
+     * 减库存
+     */
+    public void decreaseItemSpecStock(String specId, int buyCounts);
 }
