@@ -1,20 +1,25 @@
 package com.kenrou.service.impl;
 
 import com.kenrou.enums.OrderStatusEnum;
+import com.kenrou.enums.PayMethod;
 import com.kenrou.enums.YesOrNo;
 import com.kenrou.mapper.OrderItemsMapper;
 import com.kenrou.mapper.OrderStatusMapper;
 import com.kenrou.mapper.OrdersMapper;
 import com.kenrou.pojo.*;
 import com.kenrou.pojo.bo.SubmitOrderBO;
+import com.kenrou.pojo.vo.MerchantOrderVO;
+import com.kenrou.pojo.vo.OrderVo;
 import com.kenrou.service.AddressService;
 import com.kenrou.service.ItemService;
 import com.kenrou.service.OrderService;
+import com.kenrou.utils.MD5Utils;
 import org.n3r.idworker.Sid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.DigestUtils;
 
 import java.util.Date;
 
@@ -36,7 +41,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Transactional(propagation = Propagation.REQUIRED)
     @Override
-    public String createOrder(SubmitOrderBO submitOrderBO) {
+    public OrderVo createOrder(SubmitOrderBO submitOrderBO) {
 
         String userId = submitOrderBO.getUserId();
         String addressId = submitOrderBO.getAddressId();
@@ -115,7 +120,35 @@ public class OrderServiceImpl implements OrderService {
 
         orderStatusMapper.insert(waitPayOrderStatus);
 
-        return orderId;
+        // 4.构建商户订单，用于传给支付中心
+        MerchantOrderVO merchantOrderVO = new MerchantOrderVO();
+        Integer totalPrice = (realPayAmount) + postAmount; // 支付价格
+        Long time = System.currentTimeMillis() / 1000; // 时间戳
+        try {
+            String tokenStr = time + "&mp" + "1" + "&mp" + "m*68+098_q1";
+            String token = DigestUtils.md5DigestAsHex(tokenStr.getBytes());
+
+            merchantOrderVO.setToken(token);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        merchantOrderVO.setApp_id(1);
+        merchantOrderVO.setTime(time);
+        merchantOrderVO.setUser_id(submitOrderBO.getUserId());
+        merchantOrderVO.setBody("测试");
+        merchantOrderVO.setOrder_no(orderId);
+        merchantOrderVO.setTotal_price(totalPrice.toString());
+        if (submitOrderBO.getPayMethod() == PayMethod.WEIXIN.type) {
+            merchantOrderVO.setServe_type("wechat");
+            merchantOrderVO.setPay_type("scan");
+        }
+
+        // 5.构建自定义订单VO
+        OrderVo orderVo = new OrderVo();
+        orderVo.setOrderId(orderId);
+        orderVo.setMerchantOrderVO(merchantOrderVO);
+
+        return orderVo;
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
@@ -127,5 +160,12 @@ public class OrderServiceImpl implements OrderService {
         order.setPayTime(new Date());
 
         orderStatusMapper.updateByPrimaryKeySelective(order);
+    }
+
+    @Transactional(propagation = Propagation.SUPPORTS)
+    @Override
+    public Orders queryOrderById(String orderId) {
+
+        return ordersMapper.selectByPrimaryKey(orderId);
     }
 }

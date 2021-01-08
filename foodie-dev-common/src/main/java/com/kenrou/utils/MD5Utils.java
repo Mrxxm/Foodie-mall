@@ -1,6 +1,7 @@
 package com.kenrou.utils;
 
 import org.apache.commons.codec.binary.Base64;
+import org.springframework.util.DigestUtils;
 
 import java.security.MessageDigest;
 
@@ -20,7 +21,9 @@ public class MD5Utils {
 
 	public static void main(String[] args) {
 		try {
-			String md5 = getMD5Str("imooc");
+			String tokenStr = "1610080482" + "&mp" + "1" + "&mp" + "m*68+098_q1";
+//			String md5 = getMD5Str( "1610080482" + "&mp" + "1" + "&mp" + "m*68+098_q1");
+			String md5 = DigestUtils.md5DigestAsHex(tokenStr.getBytes());
 			System.out.println(md5);
 		} catch (Exception e) {
 			e.printStackTrace();

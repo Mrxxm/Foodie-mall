@@ -2,18 +2,25 @@ package com.kenrou.controller;
 
 import com.kenrou.enums.OrderStatusEnum;
 import com.kenrou.enums.PayMethod;
+import com.kenrou.pojo.Orders;
 import com.kenrou.pojo.bo.SubmitOrderBO;
+import com.kenrou.pojo.vo.MerchantOrderVO;
+import com.kenrou.pojo.vo.OrderVo;
 import com.kenrou.service.OrderService;
 import com.kenrou.utils.CookieUtils;
 import com.kenrou.utils.IMOOCJSONResult;
+import com.kenrou.utils.MD5Utils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
+import springfox.documentation.spring.web.json.Json;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -25,6 +32,8 @@ public class OrdersController extends BaseController{
 
     @Autowired
     private OrderService orderService;
+    @Autowired
+    private RestTemplate restTemplate;
 
     @ApiOperation(value = "用户下单", notes = "用户下单", httpMethod = "POST")
     @PostMapping("/create")
@@ -38,14 +47,25 @@ public class OrdersController extends BaseController{
         }
 
         // 1.创建订单
-        String orderId = orderService.createOrder(submitOrderBO);
+        OrderVo orderVo = orderService.createOrder(submitOrderBO);
+
         // 2.移除购物车中以提交的商品
         // TODO 整合redis之后，完善购物车中的已结算商品清除，并且同步到前端cookie
 //        CookieUtils.setCookie(request, response, FOODIE_SHOPCART, "", true);
+
         // 3.向支付中心发起请求
+        MerchantOrderVO merchantOrderVO = orderVo.getMerchantOrderVO();
+        merchantOrderVO.setReturn_url(payReturnUrl);
 
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+//        headers.add("token", "token");
+        HttpEntity<MerchantOrderVO> entity = new HttpEntity<>(merchantOrderVO, headers);
+        ResponseEntity<String> responseEntity = restTemplate.postForEntity(paymentUrl, entity, String.class);
 
-        return IMOOCJSONResult.ok(orderId);
+        System.out.println(responseEntity);
+
+        return IMOOCJSONResult.ok(orderVo.getOrderId());
     }
 
     /**
