@@ -10,5 +10,10 @@ public interface OrderService {
     /**
      * 创建订单
      */
-    public void createOrder(SubmitOrderBO submitOrderBO);
+    public String createOrder(SubmitOrderBO submitOrderBO);
+
+    /**
+     * 订单修改状态
+     */
+    public void updateOrderStatus(String orderId, Integer orderStatus);
 }
