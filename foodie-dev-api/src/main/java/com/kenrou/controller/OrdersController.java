@@ -3,6 +3,7 @@ package com.kenrou.controller;
 import com.kenrou.enums.OrderStatusEnum;
 import com.kenrou.enums.PayMethod;
 import com.kenrou.pojo.Orders;
+import com.kenrou.pojo.bo.PayCenterBO;
 import com.kenrou.pojo.bo.SubmitOrderBO;
 import com.kenrou.pojo.vo.MerchantOrderVO;
 import com.kenrou.pojo.vo.OrderVo;
@@ -61,9 +62,12 @@ public class OrdersController extends BaseController{
         headers.setContentType(MediaType.APPLICATION_JSON);
 //        headers.add("token", "token");
         HttpEntity<MerchantOrderVO> entity = new HttpEntity<>(merchantOrderVO, headers);
-        ResponseEntity<String> responseEntity = restTemplate.postForEntity(paymentUrl, entity, String.class);
+        ResponseEntity<PayCenterBO> responseEntity = restTemplate.postForEntity(paymentUrl, entity, PayCenterBO.class);
 
-        System.out.println(responseEntity);
+        PayCenterBO payCenterBO = responseEntity.getBody();
+        if (payCenterBO.getCode() != 200) {
+            return IMOOCJSONResult.errorMsg("支付中心订单创建失败，请联系管理员！");
+        }
 
         return IMOOCJSONResult.ok(orderVo.getOrderId());
     }
