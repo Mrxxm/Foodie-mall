@@ -13,6 +13,7 @@ import com.kenrou.pojo.vo.OrderVo;
 import com.kenrou.service.AddressService;
 import com.kenrou.service.ItemService;
 import com.kenrou.service.OrderService;
+import com.kenrou.utils.DateUtil;
 import com.kenrou.utils.MD5Utils;
 import org.n3r.idworker.Sid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,11 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.DigestUtils;
 
+import java.awt.*;
+import java.text.ParsePosition;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -116,7 +121,7 @@ public class OrderServiceImpl implements OrderService {
         OrderStatus waitPayOrderStatus = new OrderStatus();
         waitPayOrderStatus.setOrderId(orderId);
         waitPayOrderStatus.setOrderStatus(OrderStatusEnum.WAIT_PAY.type);
-        waitPayOrderStatus.setCloseTime(new Date());
+        waitPayOrderStatus.setCreatedTime(new Date());
 
         orderStatusMapper.insert(waitPayOrderStatus);
 
@@ -176,5 +181,40 @@ public class OrderServiceImpl implements OrderService {
         orderStatus.setOrderId(orderId);
 
         return orderStatusMapper.selectOne(orderStatus);
+    }
+
+    @Transactional(propagation = Propagation.REQUIRED)
+    @Override
+    public void closeOrder() {
+
+        // 查询所有未付款订单，判断时间是否超时(2hours)
+        OrderStatus queryOrder = new OrderStatus();
+        queryOrder.setOrderStatus(OrderStatusEnum.WAIT_PAY.type);
+
+        List<OrderStatus> list = orderStatusMapper.select(queryOrder);
+        for (OrderStatus os: list) {
+            // 获得订单创建时间
+            Date createdTime = os.getCreatedTime();
+            Long time = System.currentTimeMillis() / 1000; // 时间戳
+            if (createdTime != null) {
+                Long createdTimeStamp = (new SimpleDateFormat(
+                        DateUtil.DATETIME_PATTERN)).parse(DateUtil.dateToString(createdTime, DateUtil.DATETIME_PATTERN), new ParsePosition(0)).getTime() / 1000;
+                Long hours = (time - createdTimeStamp) / 60 / 60;
+                if (hours > 2) {
+                    // 2小时超时
+                    doCloseOrder(os.getOrderId());
+                }
+            }
+        }
+    }
+
+    @Transactional(propagation = Propagation.REQUIRED)
+    void doCloseOrder(String orderId) {
+        OrderStatus close = new OrderStatus();
+        close.setOrderId(orderId);
+        close.setOrderStatus(OrderStatusEnum.CLOSE.type);
+        close.setCloseTime(new Date());
+
+        orderStatusMapper.updateByPrimaryKeySelective(close);
     }
 }
