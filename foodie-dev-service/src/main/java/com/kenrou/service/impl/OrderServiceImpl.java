@@ -199,9 +199,9 @@ public class OrderServiceImpl implements OrderService {
             if (createdTime != null) {
                 Long createdTimeStamp = (new SimpleDateFormat(
                         DateUtil.DATETIME_PATTERN)).parse(DateUtil.dateToString(createdTime, DateUtil.DATETIME_PATTERN), new ParsePosition(0)).getTime() / 1000;
-                Long hours = (time - createdTimeStamp) / 60 / 60;
-                if (hours > 2) {
-                    // 2小时超时
+                Long hours = (time - createdTimeStamp) / 60;
+                if (hours > 3) {
+                    // 3分钟超时
                     doCloseOrder(os.getOrderId());
                 }
             }
