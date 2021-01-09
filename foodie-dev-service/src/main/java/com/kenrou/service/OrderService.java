@@ -1,6 +1,7 @@
 package com.kenrou.service;
 
 import com.kenrou.pojo.Carousel;
+import com.kenrou.pojo.OrderStatus;
 import com.kenrou.pojo.Orders;
 import com.kenrou.pojo.bo.SubmitOrderBO;
 import com.kenrou.pojo.vo.OrderVo;
@@ -23,4 +24,9 @@ public interface OrderService {
      * 获取订单
      */
     public Orders queryOrderById(String orderId);
+
+    /**
+     * 获取订单状态
+     */
+    public OrderStatus queryOrderStatusByOrderId(String orderId);
 }

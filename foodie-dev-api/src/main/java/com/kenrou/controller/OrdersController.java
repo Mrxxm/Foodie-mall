@@ -2,6 +2,7 @@ package com.kenrou.controller;
 
 import com.kenrou.enums.OrderStatusEnum;
 import com.kenrou.enums.PayMethod;
+import com.kenrou.pojo.OrderStatus;
 import com.kenrou.pojo.Orders;
 import com.kenrou.pojo.bo.PayCenterBO;
 import com.kenrou.pojo.bo.SubmitOrderBO;
@@ -14,10 +15,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpServletRequest;
@@ -77,6 +75,14 @@ public class OrdersController extends BaseController{
         orderService.updateOrderStatus(merchantOrderId, OrderStatusEnum.WAIT_DELIVER.type);
 
         return HttpStatus.OK.value();
+    }
+
+    @ApiOperation(value = "查询订单状态", notes = "查询订单状态", httpMethod = "POST")
+    @PostMapping("/getPaidOrderInfo")
+    public IMOOCJSONResult getPaidOrderInfo(@RequestParam String orderId) {
+        OrderStatus orderStatus = orderService.queryOrderStatusByOrderId(orderId);
+
+        return IMOOCJSONResult.ok(orderStatus);
     }
 
 }

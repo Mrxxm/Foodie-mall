@@ -168,4 +168,13 @@ public class OrderServiceImpl implements OrderService {
 
         return ordersMapper.selectByPrimaryKey(orderId);
     }
+
+    @Transactional(propagation = Propagation.SUPPORTS)
+    @Override
+    public OrderStatus queryOrderStatusByOrderId(String orderId) {
+        OrderStatus orderStatus = new OrderStatus();
+        orderStatus.setOrderId(orderId);
+
+        return orderStatusMapper.selectOne(orderStatus);
+    }
 }
