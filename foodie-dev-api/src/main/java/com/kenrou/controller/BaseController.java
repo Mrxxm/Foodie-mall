@@ -1,5 +1,6 @@
 package com.kenrou.controller;
 
+import com.kenrou.pojo.Users;
 import org.springframework.stereotype.Controller;
 
 @Controller
@@ -18,4 +19,17 @@ public class BaseController {
 //    String payReturnUrl = "http://192.168.31.20:8018/orders/notifyMerchantOrderPaid";
 //    String payReturnUrl = "http://127.0.0.1:8018/orders/notifyMerchantOrderPaid";
     String payReturnUrl = "http://9h6scj.natappfree.cc/orders/notifyMerchantOrderPaid"; // NatApp内网穿透地址
+
+    protected Users setNullProperty(Users user) {
+
+        user.setPassword(null);
+        user.setRealname(null);
+        user.setMobile(null);
+        user.setEmail(null);
+        user.setBirthday(null);
+        user.setCreatedTime(null);
+        user.setUpdatedTime(null);
+
+        return user;
+    }
 }

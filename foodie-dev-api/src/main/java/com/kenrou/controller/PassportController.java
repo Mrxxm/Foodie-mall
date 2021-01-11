@@ -18,7 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 @Api(value = "注册登录", tags = {"注册登录相关接口"})
 @RestController
 @RequestMapping("passport")
-public class PassportController {
+public class PassportController extends BaseController{
 
     @Autowired
     private UserService userService;
@@ -111,19 +111,6 @@ public class PassportController {
         // TODO 同步购物车数据
 
         return IMOOCJSONResult.ok(user);
-    }
-
-    private Users setNullProperty(Users user) {
-
-        user.setPassword(null);
-        user.setRealname(null);
-        user.setMobile(null);
-        user.setEmail(null);
-        user.setBirthday(null);
-        user.setCreatedTime(null);
-        user.setUpdatedTime(null);
-
-        return user;
     }
 
     @ApiOperation(value = "用户登出", notes = "用户登出", httpMethod = "POST")

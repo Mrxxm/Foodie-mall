@@ -1,16 +1,14 @@
-package com.kenrou.pojo.bo;
+package com.kenrou.pojo.bo.center;
 
 import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
 
 import java.util.Date;
 
 @ApiModel(value = "用户中心对象BO", description = "从客户端，由用户传入的数据封装在此entity中")
-public class UserInfoBO {
+public class CenterUserBO {
 
 //    @ApiModelProperty(value = "用户名", name = "username", example = "kenrou", required = true)
-    private String id;
-//    private String username;
+    private String username;
     private Date birthday;
     private String email;
     private String face;
@@ -19,12 +17,12 @@ public class UserInfoBO {
     private String realname;
     private Integer sex;
 
-    public String getId() {
-        return id;
+    public String getUsername() {
+        return username;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public Date getBirthday() {

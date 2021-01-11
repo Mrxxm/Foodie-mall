@@ -2,7 +2,7 @@ package com.kenrou.service.impl.center;
 
 import com.kenrou.mapper.UsersMapper;
 import com.kenrou.pojo.Users;
-import com.kenrou.pojo.bo.UserInfoBO;
+import com.kenrou.pojo.bo.center.CenterUserBO;
 import com.kenrou.service.center.CenterUserService;
 import org.n3r.idworker.Sid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,5 +32,24 @@ public class CenterUserServiceImpl implements CenterUserService {
         user.setPassword("");
 
         return user;
+    }
+
+    @Transactional(propagation = Propagation.REQUIRED)
+    @Override
+    public Users updateUserInfo(String userId, CenterUserBO userInfoBO) {
+        Users user = new Users();
+        user.setId(userId);
+        user.setNickname(userInfoBO.getNickname());
+        user.setRealname(userInfoBO.getRealname());
+        user.setBirthday(userInfoBO.getBirthday());
+        user.setMobile(userInfoBO.getMobile());
+        user.setEmail(userInfoBO.getEmail());
+        user.setFace(userInfoBO.getFace());
+        user.setSex(userInfoBO.getSex());
+        user.setUpdatedTime(new Date());
+
+        usersMapper.updateByPrimaryKeySelective(user);
+
+        return queryUserInfo(userId);
     }
 }
