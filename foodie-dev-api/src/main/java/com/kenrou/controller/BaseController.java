@@ -3,6 +3,8 @@ package com.kenrou.controller;
 import com.kenrou.pojo.Users;
 import org.springframework.stereotype.Controller;
 
+import java.io.File;
+
 @Controller
 public class BaseController {
 
@@ -19,6 +21,14 @@ public class BaseController {
 //    String payReturnUrl = "http://192.168.31.20:8018/orders/notifyMerchantOrderPaid";
 //    String payReturnUrl = "http://127.0.0.1:8018/orders/notifyMerchantOrderPaid";
     String payReturnUrl = "http://9h6scj.natappfree.cc/orders/notifyMerchantOrderPaid"; // NatApp内网穿透地址
+
+    // 用户上传地址
+    public static final String IMAGE_USER_FACE_LOCATION =
+            File.separator + "var" +
+            File.separator + "www" +
+            File.separator + "foodie-dev" +
+            File.separator + "img";
+
 
     protected Users setNullProperty(Users user) {
 
