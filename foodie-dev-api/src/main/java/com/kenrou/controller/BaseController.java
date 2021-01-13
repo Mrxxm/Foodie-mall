@@ -1,6 +1,10 @@
 package com.kenrou.controller;
 
+import com.kenrou.pojo.Orders;
 import com.kenrou.pojo.Users;
+import com.kenrou.service.center.MyOrdersService;
+import com.kenrou.utils.IMOOCJSONResult;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 import java.io.File;
@@ -20,7 +24,7 @@ public class BaseController {
 //    String payReturnUrl = "http://localhost:8018/orders/notifyMerchantOrderPaid";
 //    String payReturnUrl = "http://192.168.31.20:8018/orders/notifyMerchantOrderPaid";
 //    String payReturnUrl = "http://127.0.0.1:8018/orders/notifyMerchantOrderPaid";
-    String payReturnUrl = "http://a753uj.natappfree.cc/orders/notifyMerchantOrderPaid"; // NatApp内网穿透地址
+    String payReturnUrl = "http://ix3q42.natappfree.cc/orders/notifyMerchantOrderPaid"; // NatApp内网穿透地址
 
     // 用户上传地址
     public static final String IMAGE_USER_FACE_LOCATION =
@@ -41,5 +45,19 @@ public class BaseController {
         user.setUpdatedTime(null);
 
         return user;
+    }
+
+    @Autowired
+    protected MyOrdersService myOrdersService;
+    /**
+     * 用于验证用户和订单关联
+     */
+    protected IMOOCJSONResult checkUserOrder(String userId, String orderId) {
+        Orders order = myOrdersService.queryMyOrder(userId, orderId);
+
+        if (order == null) {
+            return IMOOCJSONResult.errorMsg("用户订单不对应");
+        }
+        return IMOOCJSONResult.ok(order);
     }
 }

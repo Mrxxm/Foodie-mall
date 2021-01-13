@@ -13,7 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-@Api(value = "我的信息", tags = {"我的信息"})
+@Api(value = "我的订单", tags = {"我的订单"})
 @RestController
 @RequestMapping("myorders")
 public class CenterOrdersController extends BaseController {
@@ -95,18 +95,6 @@ public class CenterOrdersController extends BaseController {
 
         myOrdersService.deleteOrder(orderId);
 
-        return IMOOCJSONResult.ok();
-    }
-
-    /**
-     * 用于验证用户和订单关联
-     */
-    public IMOOCJSONResult checkUserOrder(String userId, String orderId) {
-        Orders order = myOrdersService.queryMyOrder(userId, orderId);
-
-        if (order == null) {
-            return IMOOCJSONResult.errorMsg("用户订单不对应");
-        }
         return IMOOCJSONResult.ok();
     }
 
