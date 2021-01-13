@@ -12,6 +12,7 @@
     <result column="payMethod" property="payMethod" />
     <result column="realPayAmount" property="realPayAmount" />
     <result column="postAmount" property="postAmount" />
+    <result column="isComment" property="isComment" />
     <result column="orderStatus" property="orderStatus" />
 
     <!--
@@ -41,6 +42,7 @@
           od.pay_method as payMethod,
           od.real_pay_amount as realPayAmount,
           od.post_amount as postAmount,
+          od.is_comment as isComment,
           os.order_status as orderStatus
         FROM
           orders od
