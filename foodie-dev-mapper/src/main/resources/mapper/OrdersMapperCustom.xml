@@ -18,8 +18,12 @@
       collection 标签：用于定义关联的list集合类型的封装规则
       property： 对应三级分类的list属性名
       ofType： 集合的类型，三级分类的vo
+
+      修改添加：
+      select 新的查询语句
+      column 传参带入
     -->
-    <collection property="subOrderItemList" ofType="com.kenrou.pojo.vo.MySubOrderItemVO">
+    <collection property="subOrderItemList" select="getSubItems" column="orderId" ofType="com.kenrou.pojo.vo.MySubOrderItemVO">
       <result column="itemId" property="itemId" />
       <result column="itemName" property="itemName" />
       <result column="itemImg" property="itemImg" />
@@ -37,24 +41,13 @@
           od.pay_method as payMethod,
           od.real_pay_amount as realPayAmount,
           od.post_amount as postAmount,
-          os.order_status as orderStatus,
-          oi.item_id as itemId,
-          oi.item_name as itemName,
-          oi.item_img as itemImg,
-          oi.item_spec_id as itemSpecId,
-          oi.item_spec_name as itemSpecName,
-          oi.buy_counts as buyCounts,
-          oi.price as price
+          os.order_status as orderStatus
         FROM
           orders od
         LEFT JOIN
           order_status os
         ON
           od.id = os.order_id
-        LEFT JOIN
-          order_items oi
-        ON
-          od.id = oi.order_id
         WHERE
           od.user_id = #{paramsMap.userId}
         AND
@@ -66,5 +59,57 @@
         ORDER BY
           od.updated_time ASC
   </select>
+
+    <select id="getSubItems" parameterType="String" resultType="com.kenrou.pojo.vo.MySubOrderItemVO">
+      SELECT
+         oi.item_id as itemId,
+        oi.item_name as itemName,
+        oi.item_img as itemImg,
+        oi.item_spec_id as itemSpecId,
+        oi.item_spec_name as itemSpecName,
+        oi.buy_counts as buyCounts,
+        oi.price as price
+      FROM
+        order_items oi
+      WHERE
+        oi.order_id = #{orderId}
+    </select>
+
+    <select id="queryMyOrdersDoNotUse" resultMap="myOrdersVO" parameterType="Map">
+        SELECT
+        od.id as orderId,
+        od.created_time as createdTime,
+        od.pay_method as payMethod,
+        od.real_pay_amount as realPayAmount,
+        od.post_amount as postAmount,
+        os.order_status as orderStatus,
+        oi.item_id as itemId,
+        oi.item_name as itemName,
+        oi.item_img as itemImg,
+        oi.item_spec_id as itemSpecId,
+        oi.item_spec_name as itemSpecName,
+        oi.buy_counts as buyCounts,
+        oi.price as price
+        FROM
+        orders od
+        LEFT JOIN
+        order_status os
+        ON
+        od.id = os.order_id
+        LEFT JOIN
+        order_items oi
+        ON
+        od.id = oi.order_id
+        WHERE
+        od.user_id = #{paramsMap.userId}
+        AND
+        od.is_delete = 0
+        <if test="paramsMap.orderStatus != null">
+            AND
+            os.order_status = #{paramsMap.orderStatus}
+        </if>
+        ORDER BY
+        od.updated_time ASC
+    </select>
 
 </mapper>

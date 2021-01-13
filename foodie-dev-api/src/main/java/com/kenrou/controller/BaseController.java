@@ -20,7 +20,7 @@ public class BaseController {
 //    String payReturnUrl = "http://localhost:8018/orders/notifyMerchantOrderPaid";
 //    String payReturnUrl = "http://192.168.31.20:8018/orders/notifyMerchantOrderPaid";
 //    String payReturnUrl = "http://127.0.0.1:8018/orders/notifyMerchantOrderPaid";
-    String payReturnUrl = "http://9h6scj.natappfree.cc/orders/notifyMerchantOrderPaid"; // NatApp内网穿透地址
+    String payReturnUrl = "http://a753uj.natappfree.cc/orders/notifyMerchantOrderPaid"; // NatApp内网穿透地址
 
     // 用户上传地址
     public static final String IMAGE_USER_FACE_LOCATION =
