@@ -57,11 +57,16 @@ public class OrdersController extends BaseController{
         headers.setContentType(MediaType.APPLICATION_JSON);
 //        headers.add("token", "token");
         HttpEntity<MerchantOrderVO> entity = new HttpEntity<>(merchantOrderVO, headers);
-        ResponseEntity<PayCenterBO> responseEntity = restTemplate.postForEntity(paymentUrl, entity, PayCenterBO.class);
+        try {
+            ResponseEntity<PayCenterBO> responseEntity = restTemplate.postForEntity(paymentUrl, entity, PayCenterBO.class);
+            PayCenterBO payCenterBO = responseEntity.getBody();
 
-        PayCenterBO payCenterBO = responseEntity.getBody();
-        if (payCenterBO.getCode() != 200) {
-            return IMOOCJSONResult.errorMsg("支付中心订单创建失败，请联系管理员！");
+            if (payCenterBO.getCode() != 200) {
+                return IMOOCJSONResult.errorMsg("支付中心订单创建失败，请联系管理员！");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return IMOOCJSONResult.errorMsg(e.getMessage());
         }
 
         return IMOOCJSONResult.ok(orderVo.getOrderId());
