@@ -9,6 +9,8 @@ import com.kenrou.mapper.OrdersMapperCustom;
 import com.kenrou.pojo.OrderStatus;
 import com.kenrou.pojo.Orders;
 import com.kenrou.pojo.vo.MyOrdersVO;
+import com.kenrou.pojo.vo.center.CenterOrderStatusCountVO;
+import com.kenrou.pojo.vo.center.CenterOrderTrendVO;
 import com.kenrou.service.center.MyOrdersService;
 import com.kenrou.service.impl.BaseService;
 import com.kenrou.utils.PagedGridResult;
@@ -115,5 +117,44 @@ public class MyOrdersServiceImpl extends BaseService implements MyOrdersService 
         order.setUpdatedTime(new Date());
 
         ordersMapper.updateByPrimaryKeySelective(order);
+    }
+
+    @Transactional(propagation = Propagation.SUPPORTS)
+    @Override
+    public CenterOrderStatusCountVO getMyOrderStatusCount(String userId) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("userId", userId);
+        map.put("orderStatus", OrderStatusEnum.WAIT_PAY.type);
+        Integer waitPayCount = ordersMapperCustom.getMyOrderStatusCount(map);
+
+        map.put("orderStatus", OrderStatusEnum.WAIT_DELIVER.type);
+        Integer waitDeliverCount = ordersMapperCustom.getMyOrderStatusCount(map);
+
+        map.put("orderStatus", OrderStatusEnum.WAIT_RECEIVE.type);
+        Integer waitReceiveCount = ordersMapperCustom.getMyOrderStatusCount(map);
+
+        map.put("orderStatus", OrderStatusEnum.SUCCESS.type);
+        map.put("isComment", YesOrNo.NO.type);
+        Integer waitCommentCount = ordersMapperCustom.getMyOrderStatusCount(map);
+
+        CenterOrderStatusCountVO centerOrderStatusCountVO = new CenterOrderStatusCountVO();
+        centerOrderStatusCountVO.setWaitPayCounts(waitPayCount);
+        centerOrderStatusCountVO.setWaitDeliverCounts(waitDeliverCount);
+        centerOrderStatusCountVO.setWaitReceiveCounts(waitReceiveCount);
+        centerOrderStatusCountVO.setWaitCommentCounts(waitCommentCount);
+
+        return centerOrderStatusCountVO;
+    }
+
+    @Transactional(propagation = Propagation.SUPPORTS)
+    @Override
+    public PagedGridResult queryMyOrdersTrend(String userId, Integer page, Integer pageSize) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("userId", userId);
+
+        PageHelper.startPage(page, pageSize);
+        List<CenterOrderTrendVO> list = ordersMapperCustom.queryMyOrdersTrend(map);
+
+        return setterPagedGrid(list, page);
     }
 }

@@ -4,6 +4,7 @@ import com.kenrou.pojo.Orders;
 import com.kenrou.pojo.Users;
 import com.kenrou.pojo.bo.center.CenterUserBO;
 import com.kenrou.pojo.vo.MyOrdersVO;
+import com.kenrou.pojo.vo.center.CenterOrderStatusCountVO;
 import com.kenrou.utils.PagedGridResult;
 
 import java.util.List;
@@ -35,4 +36,14 @@ public interface MyOrdersService {
      * 删除订单
      */
     public void deleteOrder(String orderId);
+
+    /**
+     * 获取订单状态数
+     */
+    public CenterOrderStatusCountVO getMyOrderStatusCount(String userId);
+
+    /**
+     * 订单动向
+     */
+    public PagedGridResult queryMyOrdersTrend(String userId, Integer page, Integer pageSize);
 }

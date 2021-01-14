@@ -114,4 +114,53 @@
         od.updated_time ASC
     </select>
 
+    <select id="getMyOrderStatusCount" parameterType="Map" resultType="int">
+      SELECT
+          count(1)
+        FROM
+          orders o
+        LEFT JOIN
+          order_status os
+        ON
+          o.id = os.order_id
+        WHERE
+          o.user_id = #{paramsMap.userId}
+        AND
+          os.order_status = #{paramsMap.orderStatus}
+          <if test="paramsMap.isComment != null">
+        AND
+          o.is_comment = #{paramsMap.isComment}
+          </if>
+    </select>
+
+    <resultMap id="myOrderTrendVO" type="com.kenrou.pojo.vo.center.CenterOrderTrendVO">
+        <id column="orderId" property="orderId" />
+        <result column="orderStatus" property="orderStatus" />
+        <result column="payTime" property="payTime" />
+        <result column="deliverTime" property="deliverTime" />
+        <result column="successTime" property="successTime" />
+    </resultMap>
+
+    <select id="queryMyOrdersTrend" parameterType="Map" resultMap="myOrderTrendVO">
+      SELECT
+          o.id as orderId,
+            os.order_status as orderStatus,
+            os.pay_time as payTime,
+            os.deliver_time as deliverTime,
+            os.success_time as successTime
+        FROM
+          orders o
+        LEFT JOIN
+          order_status os
+        ON
+          o.id = os.order_id
+        WHERE
+          o.is_delete = 0
+        AND
+          o.user_id = #{paramsMap.userId}
+        AND
+          os.order_status IN (20, 30, 40)
+        ORDER BY
+          os.order_id DESC
+    </select>
 </mapper>

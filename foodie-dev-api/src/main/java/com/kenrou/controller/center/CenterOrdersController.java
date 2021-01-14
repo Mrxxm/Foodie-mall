@@ -2,6 +2,7 @@ package com.kenrou.controller.center;
 
 import com.kenrou.controller.BaseController;
 import com.kenrou.pojo.Orders;
+import com.kenrou.pojo.vo.center.CenterOrderStatusCountVO;
 import com.kenrou.service.center.MyOrdersService;
 import com.kenrou.utils.IMOOCJSONResult;
 import com.kenrou.utils.PagedGridResult;
@@ -96,6 +97,40 @@ public class CenterOrdersController extends BaseController {
         myOrdersService.deleteOrder(orderId);
 
         return IMOOCJSONResult.ok();
+    }
+
+    @ApiOperation(value = "获取订单状态数", notes = "获取订单状态数", httpMethod = "POST")
+    @PostMapping("statusCounts")
+    public IMOOCJSONResult statusCounts(@RequestParam String userId) {
+        if (StringUtils.isBlank(userId)) {
+            return IMOOCJSONResult.errorMsg("userId不能为空");
+        }
+
+        CenterOrderStatusCountVO centerOrderStatusCountVO =  myOrdersService.getMyOrderStatusCount(userId);
+
+        return IMOOCJSONResult.ok(centerOrderStatusCountVO);
+    }
+
+    @ApiOperation(value = "获取订单动向", notes = "获取订单动向", httpMethod = "POST")
+    @PostMapping("trend")
+    public IMOOCJSONResult trend(@RequestParam String userId,
+                                 @ApiParam(name = "page", value = "页码", required = false)
+                                 @RequestParam Integer page,
+                                 @ApiParam(name = "pageSize", value = "分页大小", required = false)
+                                 @RequestParam Integer pageSize) {
+        if (StringUtils.isBlank(userId)) {
+            return IMOOCJSONResult.errorMsg("userId不能为空");
+        }
+        if (page == null) {
+            page = 1;
+        }
+        if (pageSize == null) {
+            pageSize = COMMENT_PAGE_SIZE;
+        }
+
+        PagedGridResult result = myOrdersService.queryMyOrdersTrend(userId, page, pageSize);
+
+        return IMOOCJSONResult.ok(result);
     }
 
 }
