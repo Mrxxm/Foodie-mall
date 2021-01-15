@@ -22,8 +22,7 @@ public class BaseController {
 
     // 微信支付成功 -> 支付中心 -> 天天吃货平台
 //    String payReturnUrl = "http://localhost:8018/orders/notifyMerchantOrderPaid";
-//    String payReturnUrl = "http://192.168.31.20:8018/orders/notifyMerchantOrderPaid";
-//    String payReturnUrl = "http://127.0.0.1:8018/orders/notifyMerchantOrderPaid";
+//    String payReturnUrl = "http://api.kenrou.cn:8018/orders/notifyMerchantOrderPaid";
     String payReturnUrl = "http://3sdcxu.natappfree.cc/orders/notifyMerchantOrderPaid"; // NatApp内网穿透地址
 
     // 用户上传地址

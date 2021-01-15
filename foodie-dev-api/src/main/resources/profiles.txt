@@ -11,6 +11,9 @@ profiles 多环境配置梳理：
 4.baseController
   String payReturnUrl = "http://api.kenrou.cn:8018/orders/notifyMerchantOrderPaid";
 
+ 打包需要修改的文件：
+
+ profiles.txt -> application.yml -> FileUpload.java -> BaseController -> foodie-dev.pom -> foodie-dev-api.pom
 
  打包方式：
  1.jar
