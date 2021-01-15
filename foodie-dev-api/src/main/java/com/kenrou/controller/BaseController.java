@@ -24,7 +24,7 @@ public class BaseController {
 //    String payReturnUrl = "http://localhost:8018/orders/notifyMerchantOrderPaid";
 //    String payReturnUrl = "http://192.168.31.20:8018/orders/notifyMerchantOrderPaid";
 //    String payReturnUrl = "http://127.0.0.1:8018/orders/notifyMerchantOrderPaid";
-    String payReturnUrl = "http://ix3q42.natappfree.cc/orders/notifyMerchantOrderPaid"; // NatApp内网穿透地址
+    String payReturnUrl = "http://3sdcxu.natappfree.cc/orders/notifyMerchantOrderPaid"; // NatApp内网穿透地址
 
     // 用户上传地址
     public static final String IMAGE_USER_FACE_LOCATION =
@@ -56,7 +56,7 @@ public class BaseController {
         Orders order = myOrdersService.queryMyOrder(userId, orderId);
 
         if (order == null) {
-            return IMOOCJSONResult.errorMsg("用户订单不对应");
+            return IMOOCJSONResult.errorMsg("用户订单不对应或订单不存在");
         }
         return IMOOCJSONResult.ok(order);
     }
