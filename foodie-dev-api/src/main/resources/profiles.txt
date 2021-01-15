@@ -1,0 +1,12 @@
+profiles 多环境配置梳理：
+1.数据源配置
+  1.1 url localhost 或者 内网IP(集群或者分布式系统中访问使用)
+  1.2 password
+2.mybatis 日志打印
+  dev 可以打印
+  prod 无需打印
+3.图片保存目录 和 图片请求路径
+  file.imageUserFaceLocation=/var/www/foodie-dev/img
+  file.imageServerUrl=http://api.kenrou.cn:8018
+4.baseController
+  String payReturnUrl = "http://api.kenrou.cn:8018/orders/notifyMerchantOrderPaid";
