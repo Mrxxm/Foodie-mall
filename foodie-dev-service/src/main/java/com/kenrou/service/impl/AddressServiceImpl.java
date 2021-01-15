@@ -5,7 +5,6 @@ import com.kenrou.mapper.UserAddressMapper;
 import com.kenrou.pojo.UserAddress;
 import com.kenrou.pojo.bo.AddressBO;
 import com.kenrou.service.AddressService;
-import org.apache.catalina.User;
 import org.n3r.idworker.Sid;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
