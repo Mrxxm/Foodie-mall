@@ -10,3 +10,34 @@ profiles 多环境配置梳理：
   file.imageServerUrl=http://api.kenrou.cn:8018
 4.baseController
   String payReturnUrl = "http://api.kenrou.cn:8018/orders/notifyMerchantOrderPaid";
+
+
+ 打包方式：
+ 1.jar
+   服务化的概念，后续接触springCloud，所有服务打包都是jar的形式存在
+ 2.war
+   应用程序的概念，也可以向外提供服务和接口
+
+   step1:(api-pom文件中添加war包)
+      <artifactId>foodie-dev-api</artifactId>
+     <!--<packaging>jar</packaging>-->
+     <!--<packaging>war</packaging>-->
+
+   step2:(顶级-pom文件中移除自带tomcat)
+      <!-- 打包war [2] 移除自带内置tomcat -->
+         <exclusions>
+             <exclusion>
+                 <artifactId>spring-boot-starter-tomcat</artifactId>
+                 <groupId>org.springframework.boot</groupId>
+             </exclusion>
+         </exclusions>
+
+   step3:(api-pom文件中添加依赖)
+     <!--打包war[3] 添加依赖-->
+         <dependency>
+             <groupId>javax.servlet</groupId>
+             <artifactId>javax.servlet-api</artifactId>
+             <scope>provided</scope>
+         </dependency>
+
+   step4:添加WarStarterApplication启动类
