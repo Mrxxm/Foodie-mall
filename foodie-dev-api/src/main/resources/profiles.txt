@@ -44,3 +44,9 @@ profiles 多环境配置梳理：
          </dependency>
 
    step4:添加WarStarterApplication启动类
+
+   step5:
+     1.Maven点击clean，再点击install
+     2.打包好的war文件再目录：/var/www/foodie-dev/foodie-dev-api/target
+     3.将war文件重命名，拖到对应的tomcat对应的webapp目录下，自动解压
+     4.浏览器访问：http://api.kenrou.cn:8018/foodie-dev-api/api/demo/index
