@@ -13,7 +13,7 @@ profiles 多环境配置梳理：
 
  打包需要修改的文件：
 
- profiles.txt -> application.yml -> FileUpload.java -> BaseController -> foodie-dev.pom -> foodie-dev-api.pom
+ profiles.txt -> application.yml -> FileUpload.java -> BaseController -> foodie-dev.pom -> foodie-dev-api.pom -> CorsConfig.java
 
  打包方式：
  1.jar
@@ -43,10 +43,20 @@ profiles 多环境配置梳理：
              <scope>provided</scope>
          </dependency>
 
-   step4:添加WarStarterApplication启动类
+   step4:
+     添加WarStarterApplication启动类
 
    step5:
+     跨域修改
+
+   step6:
      1.Maven点击clean，再点击install
      2.打包好的war文件再目录：/var/www/foodie-dev/foodie-dev-api/target
      3.将war文件重命名，拖到服务器上对应的tomcat对应的webapp目录下：/usr/local/tomcat-api/webapps, 自动解压
      4.浏览器访问：http://api.kenrou.cn:8018/foodie-dev-api/api/demo/index
+
+   解决Cookie设置问题:
+     1.在tomcat-api的服务器目录下：
+     2.cd conf
+     3.vim content.xml
+     4.添加：<CookieProcessor className="org.apache.tomcat.util.http.LegacyCookieProcessor"/>
