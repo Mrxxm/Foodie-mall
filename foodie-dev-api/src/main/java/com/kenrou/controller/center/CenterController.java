@@ -8,7 +8,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-@Api(value = "用户中心", tags = {"用户中心相关接口"})
+@Api(value = "用户中心-用户中心", tags = {"用户中心-用户中心"})
 @RestController
 @RequestMapping("center")
 public class CenterController {

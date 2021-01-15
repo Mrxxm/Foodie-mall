@@ -29,7 +29,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Api(value = "我的信息", tags = {"我的信息"})
+@Api(value = "用户中心-我的信息", tags = {"用户中心-我的信息"})
 @RestController
 @RequestMapping("userInfo")
 public class CenterUserController extends BaseController {

@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Api(value = "我的评论", tags = {"我的评论"})
+@Api(value = "用户中心-我的评论", tags = {"用户中心-我的评论"})
 @RestController
 @RequestMapping("mycomments")
 public class CenterCommentsController extends BaseController {
