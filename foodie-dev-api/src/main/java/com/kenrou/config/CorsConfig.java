@@ -18,6 +18,10 @@ public class CorsConfig {
         // 1.添加cors配置信息
         CorsConfiguration config = new CorsConfiguration();
         config.addAllowedOrigin("http://localhost:8080");
+        config.addAllowedOrigin("http://shop.kenrou.cn:8080");
+        config.addAllowedOrigin("http://center.kenrou.cn:8080");
+        config.addAllowedOrigin("http://shop.kenrou.cn");
+        config.addAllowedOrigin("http://center.kenrou.cn");
 
         // 设置是否发送cookie信息
         config.setAllowCredentials(true);
