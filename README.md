@@ -6,4 +6,4 @@
 
 * 项目地址
 
-[项目地址](http://shop.kenrou.cn:8080/foodie-shop/)
+[项目地址](http://shop.kenrou.cn)
