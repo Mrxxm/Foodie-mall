@@ -95,6 +95,12 @@
             <version>2.1.5</version>
         </dependency>
 
+        <!-- 引入redis依赖 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
+        </dependency>
+
         <!-- apache 工具类 -->
         <dependency>
             <groupId>commons-codec</groupId>
