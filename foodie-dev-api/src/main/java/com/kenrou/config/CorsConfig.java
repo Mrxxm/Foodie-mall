@@ -20,6 +20,8 @@ public class CorsConfig {
         config.addAllowedOrigin("http://localhost:8080");
         config.addAllowedOrigin("http://shop.kenrou.cn:8080");
         config.addAllowedOrigin("http://center.kenrou.cn:8080");
+        config.addAllowedOrigin("http://shop.kenrou.cn:8081");
+        config.addAllowedOrigin("http://center.kenrou.cn:8081");
         config.addAllowedOrigin("http://shop.kenrou.cn");
         config.addAllowedOrigin("http://center.kenrou.cn");
 
