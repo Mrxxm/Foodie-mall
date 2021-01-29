@@ -1,5 +1,6 @@
 package com.kenrou.controller;
 
+import com.kenrou.utils.RedisOperator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,19 +41,19 @@ public class DemoController {
     }
 
     @Autowired
-    private RedisTemplate redisTemplate;
+    private RedisOperator redisOperator;
 
     @GetMapping("/setRedis")
     public Object setRedis(String key, String value) {
 
-        redisTemplate.opsForValue().set(key, value);
+        redisOperator.set(key, value);
         return "ok";
     }
 
     @GetMapping("/getRedis")
     public String getRedis(String key) {
 
-        Object value = redisTemplate.opsForValue().get(key);
-        return value.toString();
+       String value = redisOperator.get(key);
+        return value;
     }
 }
