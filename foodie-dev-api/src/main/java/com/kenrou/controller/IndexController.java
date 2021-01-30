@@ -8,12 +8,16 @@ import com.kenrou.pojo.vo.NewItemsVO;
 import com.kenrou.service.CarouselService;
 import com.kenrou.service.CategoryService;
 import com.kenrou.utils.IMOOCJSONResult;
+import com.kenrou.utils.JsonUtils;
+import com.kenrou.utils.RedisOperator;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Api(value = "首页", tags = {"首页相关接口"})
@@ -25,12 +29,30 @@ public class IndexController {
     private CarouselService carouselService;
     @Autowired
     private CategoryService categoryService;
+    @Autowired
+    private RedisOperator redisOperator;
 
+    /**
+     * 1.后台运营系统，一旦广告发生更改，就可以删除缓存，重置
+     * 2.定时重置，比如每天凌晨三点重置
+     * 3.每个轮播图都有可能是付费的，有一个过期时间，过期了，再重置。
+     * @return
+     */
     @ApiOperation(value = "轮播图列表", notes = "轮播图列表", httpMethod = "GET")
     @GetMapping("/carousel")
     public IMOOCJSONResult carousel() {
-        List<Carousel> result = carouselService.queryAll(YesOrNo.YES.type);
-        return IMOOCJSONResult.ok(result);
+
+        List<Carousel> list = new ArrayList<>();
+
+        String result = redisOperator.get("carousel");
+        if (StringUtils.isBlank(result)) {
+            list = carouselService.queryAll(YesOrNo.YES.type);
+            redisOperator.set("carousel", JsonUtils.objectToJson(list));
+        } else {
+            list = JsonUtils.jsonToList(result, Carousel.class);
+        }
+
+        return IMOOCJSONResult.ok(list);
     }
 
     /**

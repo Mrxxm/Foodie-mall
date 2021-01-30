@@ -3,6 +3,7 @@ package com.kenrou.service;
 import com.kenrou.pojo.Carousel;
 import com.kenrou.pojo.OrderStatus;
 import com.kenrou.pojo.Orders;
+import com.kenrou.pojo.bo.ShopcartBO;
 import com.kenrou.pojo.bo.SubmitOrderBO;
 import com.kenrou.pojo.vo.OrderVo;
 
@@ -13,7 +14,7 @@ public interface OrderService {
     /**
      * 创建订单
      */
-    public OrderVo createOrder(SubmitOrderBO submitOrderBO);
+    public OrderVo createOrder(List<ShopcartBO> shopCartList, SubmitOrderBO submitOrderBO);
 
     /**
      * 订单修改状态
