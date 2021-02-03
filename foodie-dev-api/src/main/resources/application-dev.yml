@@ -3,6 +3,19 @@ spring:
     url: jdbc:mysql://localhost:3306/foodie-shop-dev?characterEncoding=UTF-8&useSSL=false&useUnicode=true&serverTimezone=UTC
     password: 9511134231
   redis:
+    # Redis 单机单实例
     database: 3
     host: 127.0.0.1
     port: 6379
+    # Redis 哨兵模式
+#    database: 3
+#    password: xxm
+#    sentinel:
+#      master: xxm-master
+#      nodes: 192.168.1.191:26379,192.168.1.192:26379,192.168.1.193:26379
+    # Redis 集群模式
+#    password: xxm
+#    cluster:
+#      nodes: 192.168.1.201:26379,192.168.1.202:26379,192.168.1.203:26379,192.168.1.204:26379,192.168.1.205:26379,192.168.1.206:26379
+
+
