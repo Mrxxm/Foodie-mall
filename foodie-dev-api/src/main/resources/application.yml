@@ -22,6 +22,8 @@ spring:
     multipart:
       max-file-size: 10240                   # 上传文件大小 10kb
       max-request-size: 512000               # 请求大小 500kb
+  session:
+    store-type: redis                        # session存放介质
 
 mybatis:
   type-aliases-package: com.kenrou.pojo      # 所有POJO类所在包路径

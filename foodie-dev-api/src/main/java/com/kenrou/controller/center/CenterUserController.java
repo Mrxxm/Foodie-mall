@@ -3,16 +3,19 @@ package com.kenrou.controller.center;
 import com.kenrou.controller.BaseController;
 import com.kenrou.pojo.Users;
 import com.kenrou.pojo.bo.center.CenterUserBO;
+import com.kenrou.pojo.vo.UsersVO;
 import com.kenrou.resource.FileUpload;
 import com.kenrou.service.center.CenterUserService;
 import com.kenrou.utils.CookieUtils;
 import com.kenrou.utils.IMOOCJSONResult;
 import com.kenrou.utils.JsonUtils;
+import com.kenrou.utils.RedisOperator;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -28,6 +31,7 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 @Api(value = "用户中心-我的信息", tags = {"用户中心-我的信息"})
 @RestController
@@ -38,6 +42,8 @@ public class CenterUserController extends BaseController {
     private CenterUserService centerUserService;
     @Autowired
     private FileUpload fileUpload;
+    @Autowired
+    private RedisOperator redisOperator;
 
     @ApiOperation(value = "更新用户头像", notes = "更新用户头像", httpMethod = "POST")
     @PostMapping("uploadFace")
@@ -126,11 +132,25 @@ public class CenterUserController extends BaseController {
         Users handleUser = setNullProperty(user);
 
         // 设置cookie
-        CookieUtils.setCookie(request, response, "user", JsonUtils.objectToJson(handleUser), true);
+//        CookieUtils.setCookie(request, response, "user", JsonUtils.objectToJson(handleUser), true);
 
-        // TODO 后续要改，增加令牌token，整合redis
+        // TODO 后续要改，增加令牌token，整合redis - 已完成
+        UsersVO usersVO = conventUsersVO(user);
+        CookieUtils.setCookie(request, response, "user", JsonUtils.objectToJson(usersVO), true);
 
         return IMOOCJSONResult.ok();
+    }
+
+    private UsersVO conventUsersVO(Users user) {
+        // 实现用户的redis会话
+        String token = UUID.randomUUID().toString().trim();
+        redisOperator.set(REDIS_USER_TOKEN + ":" + user.getId(), token);
+
+        UsersVO usersVO = new UsersVO();
+        BeanUtils.copyProperties(user, usersVO);
+        usersVO.setUserUniqueToken(token);
+
+        return usersVO;
     }
 
     private Map<String, String> getErrors(BindingResult result) {

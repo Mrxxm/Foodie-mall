@@ -35,7 +35,7 @@ public class DemoController {
         session.setAttribute("userInfo", "new user");
         session.setMaxInactiveInterval(3600);
         session.getAttribute("userInfo");
-        session.removeAttribute("userInfo");
+//        session.removeAttribute("userInfo");
 
         return "ok";
     }
