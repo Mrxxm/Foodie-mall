@@ -3,6 +3,7 @@ package com.kenrou.controller;
 import com.kenrou.pojo.Users;
 import com.kenrou.pojo.bo.ShopcartBO;
 import com.kenrou.pojo.bo.UserBO;
+import com.kenrou.pojo.vo.UsersVO;
 import com.kenrou.service.UserService;
 import com.kenrou.utils.CookieUtils;
 import com.kenrou.utils.IMOOCJSONResult;
@@ -11,6 +12,7 @@ import com.kenrou.utils.RedisOperator;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,6 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Api(value = "注册登录", tags = {"注册登录相关接口"})
 @RestController
@@ -77,18 +80,26 @@ public class PassportController extends BaseController{
         // 5.实现注册
         Users user = userService.createUser(userBO);
 
-        user = setNullProperty(user);
+//        user = setNullProperty(user);
 
         // 6.设置cookie
-        CookieUtils.setCookie(request, response, "user", JsonUtils.objectToJson(user), true);
+//        CookieUtils.setCookie(request, response, "user", JsonUtils.objectToJson(user), true);
 
         // 用户的分布式会话
-        // TODO 生成用户token，存入redis会话
+        // TODO 生成用户token，存入redis会话 - 已完成
+        String token = UUID.randomUUID().toString().trim();
+        redisOperator.set(REDIS_USER_TOKEN + ":" + user.getId(), token);
+
+        UsersVO usersVO = new UsersVO();
+        BeanUtils.copyProperties(user, usersVO);
+        usersVO.setUserUniqueToken(token);
+
+        CookieUtils.setCookie(request, response, "user", JsonUtils.objectToJson(usersVO), true);
 
         // TODO 同步购物车数据 - 已完成
         synchShopcartData(user.getId(), request, response);
 
-        return IMOOCJSONResult.ok(user);
+        return IMOOCJSONResult.ok(usersVO);
     }
 
     @ApiOperation(value = "用户登录", notes = "用户登录", httpMethod = "POST")
@@ -109,13 +120,22 @@ public class PassportController extends BaseController{
         if (user == null) {
             return IMOOCJSONResult.errorMsg("密码错误");
         }
-        user = setNullProperty(user);
+//        user = setNullProperty(user);
 
         // 3.设置cookie
-        CookieUtils.setCookie(request, response, "user", JsonUtils.objectToJson(user), true);
+//        CookieUtils.setCookie(request, response, "user", JsonUtils.objectToJson(user), true);
 
         // 用户的分布式会话
-        // TODO 生成用户token，存入redis会话
+        // TODO 生成用户token，存入redis会话 - 已完成
+        String token = UUID.randomUUID().toString().trim();
+        redisOperator.set(REDIS_USER_TOKEN + ":" + user.getId(), token);
+
+        UsersVO usersVO = new UsersVO();
+        BeanUtils.copyProperties(user, usersVO);
+        usersVO.setUserUniqueToken(token);
+
+        CookieUtils.setCookie(request, response, "user", JsonUtils.objectToJson(usersVO), true);
+
         // TODO 同步购物车数据 - 已完成
         synchShopcartData(user.getId(), request, response);
 

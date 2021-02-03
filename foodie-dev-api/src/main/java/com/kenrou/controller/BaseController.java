@@ -17,6 +17,8 @@ public class BaseController {
     public static final Integer COMMENT_PAGE_SIZE = 10;
     public static final Integer SEARCH_PAGE_SIZE = 10;
 
+    public static final String REDIS_USER_TOKEN = "redis_user_token";
+
     // 支付中心
     String paymentUrl = "https://pay.kenrou.cn/api/pay/unifiedOrder";
 
