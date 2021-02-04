@@ -1,11 +1,16 @@
 package com.kenrou.config;
 
+import com.kenrou.controller.interceptor.UserTokenInterceptor;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer {
@@ -22,5 +27,27 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Bean
     public RestTemplate restTemplate(RestTemplateBuilder builder) {
         return builder.build();
+    }
+
+    // 创建拦截器bean
+    @Bean
+    public UserTokenInterceptor userTokenInterceptor() {
+        return new UserTokenInterceptor();
+    }
+
+    /**
+     * 拦截器注册
+     * @param registry
+     */
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+
+        List<String> paths = new ArrayList<>();
+//        paths.add("/api/demo/index");
+        paths.add("/userInfo/update");
+
+        registry.addInterceptor(userTokenInterceptor()).addPathPatterns(paths);
+        // 完成添加
+        WebMvcConfigurer.super.addInterceptors(registry);
     }
 }
