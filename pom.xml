@@ -13,6 +13,7 @@
         <module>foodie-dev-mapper</module>
         <module>foodie-dev-service</module>
         <module>foodie-dev-api</module>
+        <module>foodie-dev-sso</module>
     </modules>
 
     <!--
@@ -94,6 +95,14 @@
             <artifactId>mapper-spring-boot-starter</artifactId>
             <version>2.1.5</version>
         </dependency>
+
+        <!-- 引入spring-session -->
+        <dependency>
+            <groupId>org.springframework.session</groupId>
+            <artifactId>spring-session-data-redis</artifactId>
+        </dependency>
+
+        <!-- 引入spring安全框架 -->
 
         <!-- 引入redis依赖 -->
         <dependency>
