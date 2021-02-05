@@ -17,6 +17,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  * 				502：拦截器拦截到用户token出错
  * 				555：异常抛出信息
  * 				556: 用户qq校验异常
+ * 			    557：校验用户是否在CAS登录
  * @Copyright: Copyright (c) 2020
  * @Company: www.imooc.com
  * @author 慕课网 - 风间影月
@@ -73,6 +74,10 @@ public class IMOOCJSONResult {
     
     public static IMOOCJSONResult errorUserQQ(String msg) {
         return new IMOOCJSONResult(556, msg, null);
+    }
+
+    public static IMOOCJSONResult errorUserTicket(String msg) {
+        return new IMOOCJSONResult(557, msg, null);
     }
 
     public IMOOCJSONResult() {

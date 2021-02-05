@@ -24,6 +24,11 @@ spring:
       max-request-size: 512000               # 请求大小 500kb
   session:
     store-type: redis                        # session存放介质
+  thymeleaf:
+    mode: HTML
+    encoding: UTF-8
+    prefix: classpath:templates/
+    suffix: .html
 
 mybatis:
   type-aliases-package: com.kenrou.pojo      # 所有POJO类所在包路径
