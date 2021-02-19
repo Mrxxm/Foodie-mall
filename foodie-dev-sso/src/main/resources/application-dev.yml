@@ -7,6 +7,7 @@ spring:
     database: 3
     host: 127.0.0.1
     port: 6379
+    password: Xxm@9511
     # Redis 哨兵模式
 #    database: 3
 #    password: xxm
