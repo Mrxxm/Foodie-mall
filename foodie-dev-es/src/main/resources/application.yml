@@ -1,0 +1,5 @@
+spring:
+  data:
+    elasticsearch:
+      cluster-nodes: 127.0.0.1:9301
+      cluster-name: es6-application
