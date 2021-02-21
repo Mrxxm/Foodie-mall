@@ -14,7 +14,7 @@
         <module>foodie-dev-service</module>
         <module>foodie-dev-api</module>
         <module>foodie-dev-sso</module>
-        <module>foodie-dev-es</module>
+        <module>foodie-dev-search</module>
     </modules>
 
     <!--
@@ -109,6 +109,11 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-redis</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
 
         <!-- apache 工具类 -->
