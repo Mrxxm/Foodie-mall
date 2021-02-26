@@ -10,7 +10,7 @@ spring:
   data:
     elasticsearch:
       cluster-name: es6-application
-      cluster-nodes: 127.0.0.1:9301
+      cluster-nodes: 127.0.0.1:9300
   redis:
     # Redis 单机单实例
     database: 3
