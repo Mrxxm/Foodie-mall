@@ -2,7 +2,7 @@
 
 * 项目api文档地址
 
-[链接:地址](http://api.kenrou.cn:8018/foodie-dev-api/doc.html)
+[链接:地址](http://api.kenrou.cn/foodie-dev-api/doc.html)
 `http://api.kenrou.cn:8018/foodie-dev-api/doc.html`
 
 * 项目地址
