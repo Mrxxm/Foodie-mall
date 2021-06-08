@@ -2,6 +2,8 @@
 
 * 项目api文档地址
 
+![](https://img9.doubanio.com/view/photo/l/public/p2656462905.jpg)
+
 [链接:地址](http://api.kenrou.cn/foodie-dev-api/doc.html)
 `http://api.kenrou.cn/foodie-dev-api/doc.html`
 
@@ -64,3 +66,15 @@ server {
 * 数据库备份
 
 [数据库](http://blog.kenrou.cn/foodie-shop-dev.sql)
+
+* 网站展示
+
+![](https://img3.doubanio.com/view/photo/l/public/p2656464420.jpg)
+
+![](https://img9.doubanio.com/view/photo/l/public/p2656464426.jpg)
+
+![](https://img1.doubanio.com/view/photo/l/public/p2656464429.jpg)
+
+![](https://img2.doubanio.com/view/photo/l/public/p2656464432.jpg)
+
+![](https://img9.doubanio.com/view/photo/l/public/p2656464436.jpg)
