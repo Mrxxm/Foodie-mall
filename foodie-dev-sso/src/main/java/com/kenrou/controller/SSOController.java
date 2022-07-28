@@ -45,7 +45,7 @@ public class SSOController {
                         HttpServletResponse response) {
 
         model.addAttribute("returnUrl", returnUrl);
-        // TODO 后续完善校验是否登录 - 已完成
+
         // 1. 获取userTicket门票，如果cookie中能够获取到，证明用户登录过，此时签发一个一次性的临时票据并且回跳
         String userTicket = getCookie(request, COOKIE_USER_TICKET);
 
