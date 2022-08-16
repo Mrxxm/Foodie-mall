@@ -10,7 +10,6 @@ import com.kenrou.utils.RedisOperator;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.session.web.http.DefaultCookieSerializer;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -36,6 +35,13 @@ public class SSOController {
     public static final String REDIS_TMP_TICKET = "redis_tmp_ticket";
 
     public static final String COOKIE_USER_TICKET = "cookie_user_ticket";
+
+
+    @GetMapping("/hello")
+    @ResponseBody
+    public String hello() {
+        return "hello world)";
+    }
 
     @GetMapping("/login")
 //    @ResponseBody
